@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { User } from './user/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -16,13 +18,15 @@ import { AppService } from './app.service';
       username: 'root',
       password: '',
       database: 'graphql_database',
-      entities: ['dist/**/*.entity{.ts,.js}'],
+      //  entities: ['dist/**/*.entity{.ts,.js}'],
+      entities: [User],
       synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
